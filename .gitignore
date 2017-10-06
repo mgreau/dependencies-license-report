@@ -1,0 +1,6 @@
+.idea
+.gradle
+checkouts
+*.iml
+**/*/pkg
+build

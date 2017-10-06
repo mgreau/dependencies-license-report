@@ -1,0 +1,53 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.bmuschko:gradle-docker-plugin:3.2.0'
+    }
+}
+
+
+apply plugin: 'com.bmuschko.docker-remote-api'
+
+import com.bmuschko.gradle.docker.tasks.container.*
+import com.bmuschko.gradle.docker.tasks.image.*
+
+
+// WORKFLOW
+
+// properties
+allprojects {
+    project.ext {
+        checkoutDir = "${rootProject.projectDir.path}/checkouts"
+        jsProject = project.hasProperty('jsProject') ? project.getProperty('jsProject') : 'kibana'
+        goProject =  project.hasProperty('goProject') ? project.getProperty('goProject') : 'apm-server'
+        javaProject = project.hasProperty('javaProject') ? project.getProperty('javaProject') : 'elasticsearch'
+    }
+}
+
+// Workflow to generate Go licenses report
+task generateGoLicencesReport() {
+    dependsOn(":docker:logGoContainer")
+
+}
+
+// Workflow to generate JS report
+task generateJSLicencesReport() {
+    dependsOn("docker:logNodeContainer")
+
+}
+
+// Workflow to generate Java report
+task generateJavaLicencesReport() {
+    dependsOn("docker:logGradleContainer")
+
+}
+
+task allReports(){
+    println("** Generate all dependencies licenses reports **")
+    dependsOn generateGoLicencesReport
+    dependsOn generateJSLicencesReport
+    //dependsOn generateJavaLicencesReport
+}

@@ -1,0 +1,34 @@
+= Dependencies Licenses Report
+
+Generate Report with Licenses for your *3rd party dependencies*.
+
+NOTE: Prerequisite: Gradle and Docker installed.
+
+. Clone the repository
++
+[source, shell]
+----
+$ git clone git@github.com:mgreau/dependencies-licenses-report.git
+----
++
+. Update the local `path` to your projects sources in the `build.gradle` file:
++
+[source, groovy]
+----
+...
+allprojects {
+    project.ext {
+        checkoutDir = "${rootProject.projectDir.path}/checkouts" <1>
+...
+----
+<1> Update this path to point to the root directory of all your git projects
++
+. Generate a report
++
+[source, shell]
+----
+$ gradle :generateJSLicencesReport -PjsProject=my-project
+----
++
+. A report will be availabe in `build/my-project/dependencies-licenses.json`
+

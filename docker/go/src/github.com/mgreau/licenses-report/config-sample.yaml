@@ -1,0 +1,5 @@
+name: dependencies-licenses-report
+format: json
+project: my-project
+path: .
+output: .
